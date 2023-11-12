@@ -1,5 +1,6 @@
-package org.example.service;
+package org.example.service.garage;
 
+import org.example.dto.garage.GarageDto;
 import org.example.dto.garage.GarageFullDto;
 import org.example.dto.garage.GarageShortDto;
 
@@ -7,7 +8,7 @@ import java.util.List;
 
 public interface GarageService {
 
-    GarageFullDto createGarage(GarageShortDto garageDto);
+    GarageShortDto createGarage(GarageDto garageDto);
 
     List<GarageShortDto> getGarages();
 

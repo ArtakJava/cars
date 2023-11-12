@@ -2,18 +2,14 @@ package org.example.dto.garage;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.example.dto.CarDto;
 
-import java.util.List;
-
-@EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GarageFullDto extends GarageDto {
-    private List<CarDto> cars;
+public class GarageDto {
+    private long id;
+    private String name;
 }

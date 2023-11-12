@@ -19,6 +19,7 @@
     <modules>
         <module>server</module>
         <module>dto</module>
+        <module>gateway</module>
     </modules>
 
     <properties>
