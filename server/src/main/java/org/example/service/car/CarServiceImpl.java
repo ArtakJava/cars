@@ -35,6 +35,7 @@ public class CarServiceImpl implements CarService {
             Long carsCountInGarage = carRepository.findCarsCountInGarage(garageId);
             if (carsCountInGarage < garageCapacity) {
                 Car car = CarMapper.mapToCarEntity(carDto);
+                car.setGarage(garage.get());
                 CarDto result = CarMapper.mapToCarDto(carRepository.save(car));
                 log.info(String.format(InfoMessageManager.SUCCESS_CREATE, result));
                 return result;

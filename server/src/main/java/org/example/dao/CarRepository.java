@@ -10,8 +10,10 @@ public interface CarRepository extends JpaRepository<Car, Long> {
 
     List<Car> findByGarageId(long garageId);
 
-    @Query("select count(*)" +
-            " from Car as c" +
-            " where c.garage.getId = ?1")
+    @Query(value =
+            "select count(*)" +
+            " from Car c" +
+            " where c.garage.getId = :garageId",
+            nativeQuery = true)
     Long findCarsCountInGarage(long garageId);
 }
