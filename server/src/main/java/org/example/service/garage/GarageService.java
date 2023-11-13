@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface GarageService {
 
-    GarageShortDto createGarage(GarageDto garageDto);
+    GarageDto createGarage(GarageDto garageDto);
 
     List<GarageShortDto> getGarages();
 

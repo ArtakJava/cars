@@ -1,10 +1,12 @@
 package org.example.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.example.exception.car.CarNotFoundException;
+import org.example.exception.garage.GarageIsFullException;
+import org.example.exception.garage.GarageNotFoundException;
+import org.example.exception.garage.GarageNotFoundWhenCreateCarException;
 import org.example.messageManager.ErrorMessageManager;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -13,24 +15,46 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 public class ErrorHandler {
 
-    @ExceptionHandler(MissingServletRequestParameterException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError handleMethodArgumentNotValidException(final MissingServletRequestParameterException e) {
-        log.info("400 {}", e.getMessage());
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiError handleCarNotFoundException(final CarNotFoundException e) {
+        log.info("404 {}", e.getMessage());
         return new ApiError(
-                HttpStatus.BAD_REQUEST,
-                ErrorMessageManager.INCORRECTLY_MADE_REQUEST,
+                HttpStatus.NOT_FOUND,
+                ErrorMessageManager.DATA_NOT_FOUND,
                 e.getMessage()
         );
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiError handleGarageNotFoundException(final GarageNotFoundException e) {
+        log.info("404 {}", e.getMessage());
+        return new ApiError(
+                HttpStatus.NOT_FOUND,
+                ErrorMessageManager.DATA_NOT_FOUND,
+                e.getMessage()
+        );
+    }
+
+    @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError handleMethodArgumentNotValidException(final MethodArgumentNotValidException e) {
+    public ApiError handleGarageNotFoundWhenCreateCarException(final GarageNotFoundWhenCreateCarException e) {
         log.info("400 {}", e.getMessage());
         return new ApiError(
                 HttpStatus.BAD_REQUEST,
-                ErrorMessageManager.INCORRECTLY_MADE_REQUEST,
+                ErrorMessageManager.GARAGE_NOT_FOUND_WHEN_CREATE_CAR,
+                e.getMessage()
+        );
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError handleGarageNotFoundWhenCreateCarException(final GarageIsFullException e) {
+        log.info("400 {}", e.getMessage());
+        return new ApiError(
+                HttpStatus.BAD_REQUEST,
+                ErrorMessageManager.GARAGE_IS_FULL_REASON,
                 e.getMessage()
         );
     }

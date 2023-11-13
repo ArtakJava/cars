@@ -21,7 +21,7 @@ public class GarageController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public GarageShortDto createGarage(@RequestBody GarageDto garageDto) {
+    public GarageDto createGarage(@RequestBody GarageDto garageDto) {
         log.info(String.format(InfoMessageManager.GET_CREATE_REQUEST, garageDto));
         return service.createGarage(garageDto);
     }

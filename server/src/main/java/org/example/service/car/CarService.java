@@ -1,6 +1,6 @@
 package org.example.service.car;
 
-import org.example.dto.CarDto;
+import org.example.dto.car.CarDto;
 
 import java.util.List;
 

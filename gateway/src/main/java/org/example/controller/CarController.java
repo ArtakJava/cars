@@ -2,37 +2,39 @@ package org.example.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.client.CarClient;
 import org.example.dto.car.CarDto;
 import org.example.messageManager.InfoMessageManager;
-import org.example.service.car.CarService;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.validation.Valid;
 
-@RestController
+@Controller
 @RequestMapping(path = "/car")
 @RequiredArgsConstructor
 @Slf4j
+@Validated
 public class CarController {
-    private final CarService service;
+    private final CarClient client;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public CarDto createCar(@RequestBody CarDto carDto) {
+    public ResponseEntity<Object> createCar(@Valid @RequestBody CarDto carDto) {
         log.info(String.format(InfoMessageManager.GET_CREATE_REQUEST, carDto));
-        return service.createCar(carDto);
+        return client.createCar(carDto);
     }
 
     @GetMapping
-    public List<CarDto> getCars() {
+    public ResponseEntity<Object> getCars() {
         log.info(InfoMessageManager.GET_ALL_CARS_REQUEST);
-        return service.getCars();
+        return client.getCars();
     }
 
     @GetMapping("/{carId}")
-    public CarDto getCar(@PathVariable long carId) {
+    public ResponseEntity<Object> getCar(@PathVariable long carId) {
         log.info(String.format(InfoMessageManager.GET_CAR_REQUEST, carId));
-        return service.getCar(carId);
+        return client.getCar(carId);
     }
 }

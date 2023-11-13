@@ -1,6 +1,6 @@
 package org.example.service.car;
 
-import org.example.dto.CarDto;
+import org.example.dto.car.CarDto;
 import org.example.model.Car;
 
 public class CarMapper {
@@ -14,6 +14,7 @@ public class CarMapper {
 
     public static CarDto mapToCarDto(Car car) {
         return CarDto.builder()
+                .id(car.getId())
                 .driverName(car.getDriverName())
                 .brand(car.getBrand())
                 .garageId(car.getGarage().getId())

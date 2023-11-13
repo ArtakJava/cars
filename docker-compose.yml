@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+  gateway:
+    build: gateway
+    image: cars-gateway
+    container_name: cars-gateway
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    depends_on:
+      - server
+    environment:
+      - CARS_SERVER_URL=http://server:9090
+
+  server:
+    build: server
+    image: cars-server
+    container_name: cars-server
+    ports:
+      - "9090:9090"
+      - "9091:9091"
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/car-db
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=admin
+
+  db:
+    image: postgres:13.7-alpine
+    volumes:
+      - /var/lib/postgresql/data/
+    container_name: car-db
+    ports:
+      - "6541:5432"
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=car-db
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=car-db

@@ -4,9 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dao.CarRepository;
 import org.example.dao.GarageRepository;
-import org.example.dto.CarDto;
-import org.example.exception.GarageIsFullException;
-import org.example.exception.GarageNotFoundException;
+import org.example.dto.car.CarDto;
+import org.example.exception.car.CarNotFoundException;
+import org.example.exception.garage.GarageIsFullException;
+import org.example.exception.garage.GarageNotFoundWhenCreateCarException;
 import org.example.messageManager.ErrorMessageManager;
 import org.example.messageManager.InfoMessageManager;
 import org.example.model.Car;
@@ -24,8 +25,9 @@ import java.util.stream.Collectors;
 public class CarServiceImpl implements CarService {
     private final CarRepository carRepository;
     private final GarageRepository garageRepository;
-    @Value("${garage.capacity:4}")
-    private long garageCapacity;
+
+    @Value("${application.garage.capacity}")
+    public long garageCapacity;
 
     @Override
     public CarDto createCar(CarDto carDto) {
@@ -43,7 +45,7 @@ public class CarServiceImpl implements CarService {
                 throw new GarageIsFullException(String.format(ErrorMessageManager.GARAGE_IS_FULL, garageId));
             }
         } else {
-            throw new GarageNotFoundException(String.format(ErrorMessageManager.GARAGE_NOT_FOUND, carDto.getGarageId()));
+            throw new GarageNotFoundWhenCreateCarException(String.format(ErrorMessageManager.GARAGE_NOT_FOUND, carDto.getGarageId()));
         }
     }
 
@@ -58,8 +60,12 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public CarDto getCar(long carId) {
-        Car car = carRepository.getReferenceById(carId);
-        log.info(String.format(InfoMessageManager.SUCCESS_GET_CAR, carId));
-        return CarMapper.mapToCarDto(car);
+        Optional<Car> car = carRepository.findById(carId);
+        if (car.isPresent()) {
+            log.info(String.format(InfoMessageManager.SUCCESS_GET_CAR, carId));
+            return CarMapper.mapToCarDto(car.get());
+        } else {
+            throw new CarNotFoundException(String.format(ErrorMessageManager.CAR_NOT_FOUND, carId));
+        }
     }
 }

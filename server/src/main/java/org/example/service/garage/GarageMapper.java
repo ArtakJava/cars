@@ -18,6 +18,13 @@ public class GarageMapper {
                 .build();
     }
 
+    public static GarageDto mapToGarageDto(Garage garage) {
+        return GarageDto.builder()
+                .id(garage.getId())
+                .name(garage.getName())
+                .build();
+    }
+
     public static GarageShortDto mapToGarageShortDto(Garage garage) {
         return GarageShortDto.builder()
                 .id(garage.getId())

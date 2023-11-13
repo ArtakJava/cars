@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.example.dto.CarDto;
+import org.example.dto.car.CarDto;
 
 import java.util.List;
 
